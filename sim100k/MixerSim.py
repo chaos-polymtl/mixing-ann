@@ -25,15 +25,16 @@ def generate_data_folders(TD, HT, TC, DW, WHub, E, theta, Re, initial_Re, ne):
     Generate the folders of the geometries
 
     Args:
-        TD (list): min, max (geometric ratio)
-        HT (list): min, max (geometric ratio)
-        TC (list): min, max (geometric ratio)
-        DW (list): min, max (geometric ratio)
-        WHub (list): min, max (pourcentage of W for the Hub)
-        E (list): min, max (pourcentage of W for the thickness of the blades)
-        theta (list): min, max (angle of the blades)
-        Re (list): min, max
+        TD (list): Min, max (geometric ratio)
+        HT (list): Min, max (geometric ratio)
+        TC (list): Min, max (geometric ratio)
+        DW (list): Min, max (geometric ratio)
+        WHub (list): Min, max (pourcentage of W for the Hub)
+        E (list): Min, max (pourcentage of W for the thickness of the blades)
+        theta (list): Min, max (angle of the blades)
+        Re (list): Min, max
         initial_Re (int): For initial condition in Lethe
+        ne (int): Number of samples
     """
     # Create LHS
     k = lhs(8, samples=ne, criterion='center')
@@ -123,6 +124,32 @@ def generate_data_folders(TD, HT, TC, DW, WHub, E, theta, Re, initial_Re, ne):
         progress += 1
 
     sys.stdout.write("\n")
+
+def launch_gmsh(gmsh, min_mesh_length, min_max):
+    """
+    Launch gmsh in the cluser
+
+    Args:
+        gmsh (string): Path to gmsh
+        min_mesh_length (float): Minimum mesh length
+        min_max (float): Multiplication of minimum mesh length to set maximum mesh length
+    """
+
+    max_mesh_length = min_mesh_length*min_max
+    os.system('cp mixer.geo mixer_copy.geo')
+    
+    fic_geo = open("mixer_copy.geo","r")
+    cte_geo = fic_geo.read()
+    template = Template(cte_geo)
+    mesh = template.render(min_mesh_length = min_mesh_length,
+                           max_mesh_length = max_mesh_length)
+    fic_geo.close()
+
+    wr_geo = open("mixer_copy.geo","w")
+    wr_geo.write(mesh)
+    wr_geo.close()
+
+    os.system(gmsh + ' -3 mixer_copy.geo -o mixer.msh')
 
 def get_torque_and_write_data(first_mixer, last_mixer):
     """

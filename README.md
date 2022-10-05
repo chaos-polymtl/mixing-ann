@@ -26,10 +26,10 @@ When all the Lethe simulations are done, this method allows to gather all the to
 
 In the _sim100k_ folder, some files are used to launch the methods decribed above and the software Lethe strictly on the Digital Alliance of Canada clusters. Every step of the methodology includes two files: one _.sh_ file and one _.py_ file. The _.sh_ file will serve as the _sbash_ script and the _.py_ file will serve as a script that execute the different methods.
 
-#### _launch_folders.sh_ & _launch_folders.sh_
+#### _launch_folders.sh_ & _launch_folders.py_
 
-#### _launch_lethe.sh_ & _launch_lethe.sh_
+#### _launch_lethe.sh_ & _launch_lethe.py_
 
-#### _launch_data.sh_ & _launch_data.sh_
+#### _launch_data.sh_ & _launch_data.py_
 
 ## ANN (in folder _ai_)

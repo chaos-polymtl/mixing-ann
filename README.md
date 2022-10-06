@@ -4,7 +4,7 @@ This repository includes all the code programs, scripts and files that were used
 
 It is divided into two folders. The folder `sim100k` contains the files that served to generate the 100k CFD simulations of mixing systems. The second folder, called `ai`, contains the files that served to pre-process the data and to train the Artificial Neural Network.
 
-## CFD simulations (in folder `sim100k`)
+## 💻 CFD simulations (in folder `sim100k`)
 
 ### Setting the Python methods
 
@@ -38,9 +38,40 @@ The `launch_lethe.sh` is the `sbatch` command that submits the `launch_lethe.py`
 
 3. Launching the gathering of the data
 
-The `launch_data.sh` is the `sbatch` command that submits the `launch_data.py` as a job. It executes the `get_torque_and_write_data` to ather the torque and the power number of every simulations in the final database.
+The `launch_data.sh` is the `sbatch` command that submits the `launch_data.py` as a job. It executes the `get_torque_and_write_data` to gather the torque and the power number of every simulations in the final database.
 
-## ANN (in folder _ai_)
+## 🌐 ANN (in folder _ai_)
 
 ### Setting the Python methods
 
+In the `MixerNN.py` file, three important methods are presented. The first one allows to read the database, the second to normalize the data and the third to train the ANN.
+
+- `read_mixerdata`
+
+This methods reads the `.txt` files that contains the features (inputs) and the power number and stores them into variables.
+
+- `initial_setup`
+
+This method creates a tensor $X$ of dimension $n \times d$ where $n$ is the number of mixing samples and $d$ is the number of features, which is seven (six geometrical reatios and one Reynold number). It also create a second tensor $y$ of dimension $n \times 1$ containing the outputs $N_p$ of every mixing samples.
+
+Then, the MinMax method from [sklearn](https://scikit-learn.org/stable/) is used to scale the features and the outputs in the interval of 0 to 1 to avoid any biases during the training.
+
+Finaly, the samples are seperated into two sets: training and testing. The `train_test_split` function from sklearn is used to perform the split.
+
+- `fit_model`
+
+First, the method creates the architecture of the ANN using the [Tensorflow](https://www.tensorflow.org/?gclid=Cj0KCQjw-fmZBhDtARIsAH6H8qikMT8INmX_rvf5a83jC6K4WxbQN0EwutTxOsleIzC-3XyXXSMzGlYaAiK9EALw_wcB) and [Keras](https://keras.io/) libraries. It builds a deep network according to the arguments of the method that specifies its hyperparameters, such as the number of layers, the number of neurons, the batch size, the number of epochs, the activation function and even the validation fraction of the training set.
+
+Second, the method compiles the ANN using the training set. Not only the model is returned in this method, but also the history of the ANN. This allows to catch the evolution of the loss function.
+
+### Grid search
+
+The `grid_search.py` script performs a grid search with cross validation [GridSeachCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) to find the best hyperparameters of the ANN.
+
+### Optimum training
+
+`optimum.py`
+
+### Comparison
+
+`compare.py`

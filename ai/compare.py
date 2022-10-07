@@ -60,14 +60,10 @@ data_lethe2 = MNN.read_mixerdata('Np-Re2_0-20.txt',19)
 
 # Set the features and the target values for the training and testing set
 target_index = [0, 1, 2, 3, 5, 6, 7]
-X_train, X_test, y_train, y_test, scaler_X, scaler_y = MNN.initial_setup(data, 0.3, target_index, 8, 42)
+_, _, _, _, scaler_X, scaler_y = MNN.initial_setup(data, 0.3, target_index, 8, 42)
 
 # Load the model
 model = keras.models.load_model('optimum_mixer_model')
-
-# Predict testing set
-y_pred = model.predict(X_test)
-y_pred = scaler_y.inverse_transform(y_pred)
 
 # Set Reynolds
 Reynolds = np.logspace(0,2,50)

@@ -14,7 +14,7 @@ In the `MixerSim.py` file, we define three important methods. The first one is u
 
 This method uses the Latin Hypercube sampling (LHS) method to generate 100k samples of mixing systems. It takes in arguments the range of the features of the mixing systems (the dimensionless geometrical features and the Reynolds number $Re$). The LHS method comes from the [library pyDOE](https://pythonhosted.org/pyDOE/randomized.html). The method creates 100k different folders in which every mixer will be simulated seperately.
 
-Using the [library Jinja2](https://jinja.palletsprojects.com/en/3.1.x/), the `mixer.geo` template is copied in the folder and the arguments that allows to generate the mesh are replaced by the right geometrical ratios. The same principle is applied to the `mixer.prm` template. The kinematic viscosity parameter is replaced by the right value in order to respect the Reynolds number.
+Using the [library Jinja2](https://jinja.palletsprojects.com/en/3.1.x/), we copy the `mixer.geo` template in the folder and we replace the arguments that generates the mesh by the right geometrical ratios. We apply the same principle to the `mixer.prm` template. We replace the kinematic viscosity parameter by the right value in order to respect the Reynolds number.
 
 2. `launch_gmsh`
 
@@ -22,7 +22,7 @@ With the same library Jinja2, this methods specifies the minimum and maximum cha
 
 3. `get_torque_and_write_data`
 
-When all the Lethe simulations are done, this method gathers all the torque resulting from the simulations and then calculates the power number $N_p$ of every 100k mixers. A file of type `.txt` is generated at the end of the method and will serve as the database fed to the ANN.
+When all the Lethe simulations are done, this method gathers all the torque resulting from the simulations and then calculates the power number $N_p$ of every 100k mixers. At the end of its execution, the method generates a file of type `.txt` that will serve as the database fed to the ANN.
 
 ### Launch simulations on the cluster
 
@@ -44,25 +44,25 @@ The `launch_data.sh` is the `sbatch` command that submits the `launch_data.py` a
 
 ### Setting the Python methods
 
-In the `MixerNN.py` file, three important methods are presented. The first one allows to read the database, the second to normalize the data and the third to train the ANN.
+In the `MixerNN.py` file, three important methods are implemented. The first one reads the database, the second normalizes the data and the third trains the ANN.
 
 - `read_mixerdata`
 
-This methods reads the `.txt` files that contains the features (inputs) and the power number and stores them into variables.
+This method reads the `.txt` file that contains the features (inputs) and the power number and stores them into variables.
 
 - `initial_setup`
 
-This method creates a tensor $X$ of dimension $n \times d$ where $n$ is the number of mixing samples and $d$ is the number of features, which is seven (six geometrical reatios and one Reynold number). It also create a second tensor $y$ of dimension $n \times 1$ containing the outputs $N_p$ of every mixing samples.
+This method creates a tensor $X$ of dimension $n \times d$ where $n$ is the number of mixing samples and $d$ is the number of features, which is seven (six geometrical ratios and one Reynolds number). It also creates a second tensor $y$ of dimension $n \times 1$ containing the outputs $N_p$ of every mixing samples.
 
-Then, the MinMax method from [sklearn](https://scikit-learn.org/stable/) is used to scale the features and the outputs in the interval of 0 to 1 to avoid any biases during the training.
+Then, we use the MinMax method from [sklearn](https://scikit-learn.org/stable/) to scale the features and the outputs in the interval of 0 to 1 to avoid any bias during the training.
 
-Finaly, the samples are seperated into two sets: training and testing. The `train_test_split` function from sklearn is used to perform the split.
+Finaly, we seperate the samples into two sets: training and testing. We use the `train_test_split` function from sklearn to perform the split.
 
 - `fit_model`
 
 First, the method creates the architecture of the ANN using the [Tensorflow](https://www.tensorflow.org/?gclid=Cj0KCQjw-fmZBhDtARIsAH6H8qikMT8INmX_rvf5a83jC6K4WxbQN0EwutTxOsleIzC-3XyXXSMzGlYaAiK9EALw_wcB) and [Keras](https://keras.io/) libraries. It builds a deep network according to the arguments of the method that specifies its hyperparameters, such as the number of layers, the number of neurons, the batch size, the number of epochs, the activation function and even the validation fraction of the training set.
 
-Second, the method compiles the ANN using the training set. Not only the model is returned in this method, but also the history of the ANN. This allows to catch the evolution of the loss function.
+Second, the method compiles the ANN using the training set. In the method, we return the model and also the history of the ANN. This allows to catch the evolution of the loss function.
 
 ### Grid search
 

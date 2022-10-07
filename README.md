@@ -1,6 +1,6 @@
 # mixing-ann
 
-This repository includes all the code programs, scripts and files that were used for a project about the development of an Artificial Neural Network trained with data coming from Lethe simulations of pitched blade turbines (PBT) and paddle impellers.
+This repository includes all the code programs, scripts and files that were used for a project about the development of an Artificial Neural Network trained with data coming from Lethe simulations of mixers.
 
 It is divided into two folders. The folder `sim100k` contains the files that served to generate the 100k CFD simulations of mixing systems. The second folder, called `ai`, contains the files that served to pre-process the data and to train the Artificial Neural Network.
 
@@ -8,11 +8,11 @@ It is divided into two folders. The folder `sim100k` contains the files that ser
 
 ### Setting the Python methods
 
-In the `MixerSim.py` file, we define three important methods. The first one is used to create the 100k samples while the second is used to gather the torque and to calculate the power number $N_p$.
+In the `MixerSim.py` file, we define three important methods. The first one is used to create the 100k samples, the second to generate the mesh and the third to gather the torque and to calculate the power number $N_p$.
 
 1. `generate_data_folders`
 
-This method uses the Latin Hypercube sampling (LHS) method to generate 100k samples of mixing systems. It takes in arguments the range of the features of the mixing systems (the dimensionless geometrical features and the Reynolds number $Re$). The LHS method comes from the [library pyDOE](https://pythonhosted.org/pyDOE/randomized.html). The method creates 100k different folders in which every mixer will be simulated seperately.
+This method uses the Latin Hypercube sampling (LHS) method to generate 100k samples of mixing systems. It takes in arguments the range of the features of the mixing systems (the dimensionless geometrical features and the Reynolds number $Re$). The LHS method comes from the [library pyDOE](https://pythonhosted.org/pyDOE/randomized.html). The method creates 100k different folders in which every mixers will be simulated seperately.
 
 Using the [library Jinja2](https://jinja.palletsprojects.com/en/3.1.x/), we copy the `mixer.geo` template in the folder and we replace the arguments that generates the mesh by the right geometrical ratios. We apply the same principle to the `mixer.prm` template. We replace the kinematic viscosity parameter by the right value in order to respect the Reynolds number.
 
@@ -60,9 +60,9 @@ Finaly, we seperate the samples into two sets: training and testing. We use the 
 
 - `fit_model`
 
-First, the method creates the architecture of the ANN using the [Tensorflow](https://www.tensorflow.org/?gclid=Cj0KCQjw-fmZBhDtARIsAH6H8qikMT8INmX_rvf5a83jC6K4WxbQN0EwutTxOsleIzC-3XyXXSMzGlYaAiK9EALw_wcB) and [Keras](https://keras.io/) libraries. It builds a deep network according to the arguments of the method that specifies its hyperparameters, such as the number of layers, the number of neurons, the batch size, the number of epochs, the activation function and even the validation fraction of the training set.
+Firstly, the method creates the architecture of the ANN using the [Tensorflow](https://www.tensorflow.org/?gclid=Cj0KCQjw-fmZBhDtARIsAH6H8qikMT8INmX_rvf5a83jC6K4WxbQN0EwutTxOsleIzC-3XyXXSMzGlYaAiK9EALw_wcB) and [Keras](https://keras.io/) libraries. It builds a deep network according to the arguments of the method that specifies its hyperparameters, such as the number of layers, the number of neurons, the batch size, the number of epochs, the activation function and even the validation fraction of the training set.
 
-Second, the method compiles the ANN using the training set. In the method, we return the model and also the history of the ANN. This allows to catch the evolution of the loss function.
+Secondly, the method compiles the ANN using the training set. In the method, we return the model and also the history of the ANN. This allows to catch the evolution of the loss function.
 
 ### Grid search
 

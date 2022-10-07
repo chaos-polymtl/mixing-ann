@@ -38,9 +38,9 @@ The `launch_lethe.sh` is the `sbatch` command that submits the `launch_lethe.py`
 
 3. Launching the gathering of the data
 
-The `launch_data.sh` is the `sbatch` command that submits the `launch_data.py` as a job. It executes the `get_torque_and_write_data` to gather the torque and the power number of every simulations in the final database.
+The `launch_data.sh` is the `sbatch` command that submits the `launch_data.py` as a job. It executes the `get_torque_and_write_data` to gather the features, the torque and ultimately the power number of every simulations in the final database.
 
-## 🌐 ANN (in folder _ai_)
+## 🌐 ANN (in folder `ai`)
 
 ### Setting the Python methods
 
@@ -48,7 +48,7 @@ In the `MixerNN.py` file, three important methods are implemented. The first one
 
 - `read_mixerdata`
 
-This method reads the `.txt` file that contains the features (inputs) and the power number and stores them into variables.
+This method reads the `mixer_database_0-99999.txt` file that contains the features (inputs) and the power number (output) of the 100k mixers simulations and stores them into variables.
 
 - `initial_setup`
 
@@ -70,8 +70,10 @@ The `grid_search.py` script performs a grid search with cross validation [GridSe
 
 ### Optimum training
 
-`optimum.py`
+ We train the ANN with all the training set using the `optimum.py` script. It does the training using the hyperparameters determined by the grid search and returns the mean squared error (MSE), the mean absolute error (MAE) and the mean absolute percentage error (MAPE) of the ANN. Also, the final model is saved in the `optimum_mixer_model` folder.
 
 ### Comparison
 
-`compare.py`
+The first script (`compare.py`) generates power curves of $N_p$ versus $Re$ for a given geometry with different models. It compares the predictions of $N_p$ made by the ANN, the correlation of [Hiraoka et al.](https://downloads.hindawi.com/journals/ijce/2012/106496.pdf) and Lethe simulations. The data of the simulations are stored in `Np-Re1_0-20.txt` and `Np-Re2_0-20.txt`. The first set of simulations used a coarser mesh while the second used a finer mesh.
+
+The second script (`plot_data.py`) predicts $N_p$ with the ANN and the correlation for multiple different geometrical configurations of the testing set. It utimately plots the comparison between the $N_p$ predictions and the real values coming from the database.

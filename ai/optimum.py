@@ -12,7 +12,6 @@ from sklearn.metrics import mean_absolute_error
 # =================================================================================
 
 # Read the data
-print('.......... Reading Data ..........')
 data = MNN.read_mixerdata('mixer_database_0-99999.txt',19)
 
 # Set the features and the target values for the training and testing set

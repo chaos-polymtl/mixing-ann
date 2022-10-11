@@ -1,15 +1,17 @@
+# =================================================================================
+# Main program to verify the metrics of the optimum model.
+# Author: Valérie Bibeau, Polytechnique Montréal, 2020
+# =================================================================================
+
+# ---------------------------------------------------------------------------
+# Imports
 import MixerNN as MNN
 import matplotlib.pyplot as plt
 import numpy as np
 import math
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
-
-# =================================================================================
-# Main program to verify the metrics of the optimum model
-
-# Author: Valérie Bibeau, Polytechnique Montréal, 2020
-# =================================================================================
+# ---------------------------------------------------------------------------
 
 # Read the data
 data = MNN.read_mixerdata('mixer_database_0-99999.txt',19)
@@ -53,11 +55,9 @@ test_mape = MNN.mean_absolute_percentage_error(y_true=scaler_y.inverse_transform
 
 print("Mean Squared Error:")
 print("     Training set:   {:5.4e}".format(train_mse))
-#print("     Validation set: {:5.4e}".format(history.history['val_mse'][-1]))
 print("     Testing set:    {:5.4e}".format(test_mse))
 print("Mean Absolute Error:")
 print("     Training set:   {:5.6f}".format(train_mae))
-#print("     Validation set: {:5.6f}".format(history.history['val_mae'][-1]))
 print("     Testing set:    {:5.6f}".format(test_mae))
 print("Mean Absolute Percentage Error:")
 print("     Training set:   {:5.4f}".format(train_mape))
@@ -65,10 +65,8 @@ print("     Testing set:    {:5.4f}".format(test_mape))
 
 # Check evolution of training
 plt.plot(history.history['loss'])
-#plt.plot(history.history['val_loss'])
 plt.xscale('log')
 plt.yscale('log')
-#plt.legend(['Training', 'Validation'])
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.show()

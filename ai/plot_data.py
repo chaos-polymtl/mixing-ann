@@ -1,10 +1,20 @@
+# ============================================================================
+# Comparison of the Np predictions between the ANN, the correlation and Lethe
+# for different configurations of mixers.
+# Author : Valérie Bibeau, Polytechnique Montréal, 2022
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Imports
 import MixerNN as MNN
 import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow import keras
 import math
+# ---------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------------------
+# Correlation
 # http://downloads.hindawi.com/journals/ijce/2012/106496.pdf
 
 # b: Height of impeller blade
@@ -60,14 +70,16 @@ data = MNN.read_mixerdata('mixer_database_0-99999.txt',19)
 target_index = [0, 1, 2, 3, 5, 6, 7]
 X_train, X_test, y_train, y_test, scaler_X, scaler_y = MNN.initial_setup(data, 0.001, target_index, 8, 42)
 
+# Do predictions with the ANN
 model = keras.models.load_model('optimum_mixer_model')
-
 test_predictions = model.predict(X_test)
 
+# Print the mean absolute percentage error
 mape = MNN.mean_absolute_percentage_error(y_true=scaler_y.inverse_transform(y_test), 
                                           y_pred=scaler_y.inverse_transform(test_predictions))
 print(mape)
 
+# Generate the plots
 a = plt.axes(aspect='equal')
 plt.scatter(scaler_y.inverse_transform(y_test), scaler_y.inverse_transform(test_predictions),
             facecolors='none', edgecolors='b', label='ANN')

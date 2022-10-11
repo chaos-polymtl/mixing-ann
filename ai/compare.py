@@ -1,10 +1,20 @@
+# ============================================================================
+# Comparison of the Np predictions between the ANN, the correlation and Lethe
+# for a given mixing configuration.
+# Author : Valérie Bibeau, Polytechnique Montréal, 2020
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Imports
 import math
 import matplotlib.pyplot as plt
 import numpy as np
 import MixerNN as MNN
 from tensorflow import keras
+# ---------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------------------
+# Correlation
 # http://downloads.hindawi.com/journals/ijce/2012/106496.pdf
 
 # b: Height of impeller blade

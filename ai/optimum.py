@@ -7,8 +7,6 @@
 # Imports
 import MixerNN as MNN
 import matplotlib.pyplot as plt
-import numpy as np
-import math
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 # ---------------------------------------------------------------------------

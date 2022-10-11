@@ -19,8 +19,8 @@ tensorflow.random.set_seed(2)   # for reproducibility
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-
 # ----------------------------------------------------------------------------
+
 def read_mixerdata(file_name, col):
     """Read the data of the mixers
 

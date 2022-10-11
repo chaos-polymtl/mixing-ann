@@ -1,10 +1,11 @@
 # ============================================================================
-# Neural Network functions using TensorFlow
+# Neural Network functions using TensorFlow and Keras
 # Goal : Predict the number of power of the impeller of a mixer.
 # Author : Valérie Bibeau, Polytechnique Montréal, 2020
 # ============================================================================
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Imports
 # Arrays for data
 import numpy as np
 # To normalize data
@@ -18,13 +19,14 @@ tensorflow.random.set_seed(2)   # for reproducibility
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-
 # ----------------------------------------------------------------------------
+
 def read_mixerdata(file_name, col):
     """Read the data of the mixers
 
     Args:
         file_name (string): Name of the file that contains the data
+        col (int): Number of columns in the data file
 
     Returns:
         data (array): Mixers' dataset
@@ -86,10 +88,13 @@ def fit_model(X_train, y_train, no_features, batch_size, l2, epochs, val_frac, a
         architecture (string): Type of the architecture
         units (int): Number of units of the first hidden layer
         layers (int): Number of layers in the NN
-        verbose (int)
+        activation (string): Activation function of the hidden layers
+        verbose (int): Boolean to specify the verbosity of the training
 
     Returns:
-        history: History of the algorithme
+        history: History of the training
+        model: Model of the ANN
+        model.count_params: Number of parameters (weights) of the network
     """
     keras.backend.clear_session()
     # Optimizer

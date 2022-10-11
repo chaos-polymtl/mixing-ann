@@ -1,3 +1,10 @@
+# ============================================================================
+# Grid search with cross validation to find the hyperparameters of the model.
+# Author : Valérie Bibeau, Polytechnique Montréal, 2022
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Imports
 import MixerNN as MNN
 import numpy as np
 from tensorflow.keras.models import Sequential
@@ -5,12 +12,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow import keras
 from sklearn.model_selection import GridSearchCV
 import pandas as pd
-
-# =================================================================================
-# Main program to do a grid search on the hyperparameters
-
-# Author: Valérie Bibeau, Polytechnique Montréal, 2022
-# =================================================================================
+# ---------------------------------------------------------------------------
 
 # Read the data
 data = MNN.read_mixerdata('mixer_database_0-99999.txt',19)

@@ -12,9 +12,9 @@ In the `MixerSim.py` file, we define three important methods. The first one is u
 
 1. `generate_data_folders`
 
-This method uses the Latin Hypercube sampling (LHS) method to generate 100k samples of mixing systems. It takes in arguments the range of the features of the mixing systems (the dimensionless geometrical features and the Reynolds number $Re$). The LHS method comes from the [library pyDOE](https://pythonhosted.org/pyDOE/randomized.html). The method creates 100k different folders in which every mixers will be simulated seperately.
+This method uses the Latin Hypercube sampling (LHS) method to generate 100k samples of mixing systems. It takes in arguments the range of the features of the mixing systems (the dimensionless geometrical features and the Reynolds number $Re$). The LHS method comes from the library [pyDOE](https://pythonhosted.org/pyDOE/randomized.html). The method creates 100k different folders in which every mixers will be simulated seperately.
 
-Using the [library Jinja2](https://jinja.palletsprojects.com/en/3.1.x/), we copy the `mixer.geo` template in the folder and we replace the arguments that generates the mesh by the right geometrical ratios. We apply the same principle to the `mixer.prm` template. We replace the kinematic viscosity parameter by the right value in order to respect the Reynolds number.
+Using the library [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/), we copy the `mixer.geo` template in the folder and we replace the arguments that generates the mesh by the right geometrical ratios. We apply the same principle to the `mixer.prm` template. We replace the kinematic viscosity parameter by the right value in order to respect the Reynolds number.
 
 2. `launch_gmsh`
 
@@ -54,19 +54,19 @@ This method reads the `mixer_database_0-99999.txt` file that contains the featur
 
 This method creates a tensor $X$ of dimension $n \times d$ where $n$ is the number of mixing samples and $d$ is the number of features, which is seven (six geometrical ratios and one Reynolds number). It also creates a second tensor $y$ of dimension $n \times 1$ containing the outputs $N_p$ of every mixing samples.
 
-Then, we use the MinMax method from [sklearn](https://scikit-learn.org/stable/) to scale the features and the outputs in the interval of 0 to 1 to avoid any bias during the training.
+Then, we use the [MinMax](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html) method from sklearn to scale the features and the outputs in the interval of 0 to 1 to avoid any bias during the training.
 
-Finaly, we seperate the samples into two sets: training and testing. We use the `train_test_split` function from sklearn to perform the split.
+Finaly, we seperate the samples into two sets: training and testing. We use the [`train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) function from sklearn to perform the split.
 
 - `fit_model`
 
-Firstly, the method creates the architecture of the ANN using the [Tensorflow](https://www.tensorflow.org/?gclid=Cj0KCQjw-fmZBhDtARIsAH6H8qikMT8INmX_rvf5a83jC6K4WxbQN0EwutTxOsleIzC-3XyXXSMzGlYaAiK9EALw_wcB) and [Keras](https://keras.io/) libraries. It builds a deep network according to the arguments of the method that specifies its hyperparameters, such as the number of layers, the number of neurons, the batch size, the number of epochs, the activation function and even the validation fraction of the training set.
+Firstly, the method creates the architecture of the ANN using the [Tensorflow](https://www.tensorflow.org/?gclid=Cj0KCQjw-fmZBhDtARIsAH6H8qikMT8INmX_rvf5a83jC6K4WxbQN0EwutTxOsleIzC-3XyXXSMzGlYaAiK9EALw_wcB) and [Keras](https://keras.io/) libraries. It builds a deep network according to the arguments of the method that specifies its hyperparameters, such as the number of layers, the number of neurons, the batch size, the number of epochs and the activation function.
 
 Secondly, the method compiles the ANN using the training set. In the method, we return the model and also the history of the ANN. This allows to catch the evolution of the loss function.
 
 ### Grid search
 
-The `grid_search.py` script performs a grid search with cross validation [GridSeachCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) to find the best hyperparameters of the ANN.
+The `grid_search.py` script performs a grid search with cross validation ([GridSeachCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) from sklearn) to find the best hyperparameters of the ANN.
 
 ### Optimum training
 

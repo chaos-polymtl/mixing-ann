@@ -1,7 +1,13 @@
 cff-version: 1.2.0
 authors:
-  - family-names: Bibeau, Barbeau, Boffito, Blais
-    given-names: Valérie, Lucka, Daria Camilla, Bruno
+  - family-names: Bibeau
+    given-names: Valérie
+  - family-names: Barbeau
+    given-names: Lucka
+  - family-names: Boffito
+    given-names: Daria Camilla
+  - family-names: Blais
+    given-names: Bruno
 title: "lethe-cfd/mixing-ann"
 version: 1.0.0
 date-released: 2022-10-11
